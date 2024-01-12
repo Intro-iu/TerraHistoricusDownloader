@@ -10,6 +10,6 @@
 - 修改主函数中的start和end参数，表示漫画章节的选择范围默认分别为0和-1，表示下载全部(索引从0开始，用-1表示末尾)
 
 ## 举个例子
-- https://terra-historicus.hypergryph.com/comic/2864对应的comicID就是2864
+- `https://terra-historicus.hypergryph.com/comic/2864`对应的comicID就是2864
 
 ## 就是为了这碟醋包的饺子（乐）
