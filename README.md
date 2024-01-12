@@ -1,0 +1,2 @@
+# TerraHistoricusDownloader
+泰拉记事社的爬虫下载器，支持多线程下载与进度条显示
