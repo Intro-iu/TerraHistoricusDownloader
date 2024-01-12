@@ -3,13 +3,13 @@ from multiprocessing.dummy import Pool
 from tqdm import tqdm
 
 class Comic:
-    def __init__(self, comicId):
-        self.comicId = comicId
+    def __init__(self, comicID):
+        self.comicID = comicID
         self.base_url = "https://terra-historicus.hypergryph.com/api/comic/"
         self.get_info()
 
     def get_info(self):
-        data = json.loads(requests.get(self.base_url + str(self.comicId)).text)["data"]
+        data = json.loads(requests.get(self.base_url + str(self.comicID)).text)["data"]
         self.title = data["title"]
         self.info = data["introduction"]
         self.cover_url = data["cover"]
@@ -37,7 +37,7 @@ class Comic:
                 os.makedirs(self.title + '\\' + ep["shortTitle"] + '-' + ep["title"])
             except Exception:
                 pass
-            page = len(json.loads(requests.get(self.base_url + str(self.comicId) + "/episode/" + ep['cid']).text)["data"]["pageInfos"])
+            page = len(json.loads(requests.get(self.base_url + str(self.comicID) + "/episode/" + ep['cid']).text)["data"]["pageInfos"])
             print("Num: {:<5} ID: {:<8} pageNum: {:<5} Title: {:<15}".format(cnt, ep["cid"], page, ep["title"]))
             totalPages = totalPages + page
             pageNum.append(page)
@@ -55,7 +55,7 @@ class Comic:
         PID = ID[0]
         imgID = ID[1]
         ep = self.episodes[PID]
-        picUrl = json.loads(requests.get(self.base_url + str(self.comicId) + "/episode/" + ep['cid'] + "/page?pageNum=" + str(imgID)).text)["data"]["url"]
+        picUrl = json.loads(requests.get(self.base_url + str(self.comicID) + "/episode/" + ep['cid'] + "/page?pageNum=" + str(imgID)).text)["data"]["url"]
         picFile = requests.get(picUrl).content
         with open(self.title + '\\' + ep["shortTitle"] + '-' + ep["title"] + '\\' + 'P' + str(imgID).rjust(3, '0') + ".jpg", "wb") as f:
             f.write(picFile)
@@ -70,10 +70,10 @@ class Comic:
             f.write(cover)
 
 if __name__ == "__main__":
-    comicId = 2864
+    comicID = 2864
     start = 0
     end = -1
-    comic = Comic(comicId)
+    comic = Comic(comicID)
     comic.download(start, end)
     comic.save_info()
     comic.save_cover()
