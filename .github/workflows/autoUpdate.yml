@@ -5,7 +5,7 @@ name: autoUpdate
 
 on:
   push:
-    branches: [ "main" ]
+    branches: main
     tags:
       - "v0.1.0"
 
