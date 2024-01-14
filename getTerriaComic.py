@@ -14,6 +14,11 @@ class Comic:
         self.info = data["introduction"]
         self.cover_url = data["cover"]
         self.episodes = data["episodes"][::-1]
+        os.chdir(os.path.dirname(__file__))
+        try:
+            os.makedirs('comic/' + self.title)
+        except Exception:
+            pass
 
     def get_download_list(self, chapter):
         existentChapter = [int(name[:2]) for name in os.listdir('./comic/' + self.title) if os.path.isdir(os.path.join('./comic/' + self.title, name))]
@@ -26,11 +31,6 @@ class Comic:
     def download(self, chapter):
         if len(chapter) == 0:
             return
-        os.chdir(os.path.dirname(__file__))
-        try:
-            os.makedirs('comic/' + self.title)
-        except Exception:
-            pass
         print(str(len(self.episodes)), "in total.")
         print(len(chapter), "is downloading.")
         pageNum = []
