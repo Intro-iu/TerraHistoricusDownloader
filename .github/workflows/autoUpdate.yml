@@ -1,9 +1,13 @@
 name: autoUpdate
+
+env:
+  VERSION: v1.0.0
+
 on:
   push:
     branches: main
     tags:
-      - "v1.0.0"
+      - v*.*.*
 permissions:
   contents: write
 
@@ -32,9 +36,19 @@ jobs:
       
     - name: Zip files
       run: zip -r Asset.zip *
+
+    - name: Create Tag
+      uses: actions/create-tag@v1
+      with:
+        tag: ${{ env.VERSION }}
+        message: Release version ${}
+        sha: ${{ github.sha }}
         
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: Asset.zip
+        tag_name: ${{ env.VERSION }}
+        name: Release ${{ env.VERSION }}
+        body: 第一个稳定版本\n新增漫画补全功能，并改用在终端中传参。\n\nPS:目前的补全是以漫画文件夹名称是否存在作为参考依据，所以没办法给只是缺页的漫画补全后续应该会添加缺页补全的功能
