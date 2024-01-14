@@ -18,7 +18,7 @@ class Comic:
     def download(self, start=0, end=-1):
         os.chdir(os.path.dirname(__file__))
         try:
-            os.makedirs(self.title)
+            os.makedirs('comic\\' + self.title)
         except Exception:
             pass
         if end == -1:
