@@ -35,7 +35,7 @@ jobs:
       run: python getTerriaComic.py 2864
       
     - name: Zip files
-      run: zip -r Asset.zip /comic
+      run: zip -r Asset.zip comic
         
     - name: Release
       uses: softprops/action-gh-release@v1
