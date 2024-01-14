@@ -72,7 +72,7 @@ class Comic:
 if __name__ == "__main__":
     comicID = 2864
     start = 0
-    end = -1
+    end = 0
     comic = Comic(comicID)
     comic.download(start, end)
     comic.save_info()
