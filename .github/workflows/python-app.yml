@@ -40,7 +40,7 @@ jobs:
         python getTerriaComic.py
 
     - name: Zip the Asset
-      run: zip -r Asset.zip ./comic/
+      run: zip -r Asset.zip ./comic
         
     - name: Create Release and Upload Release Asset
       uses: softprops/action-gh-release@v1
