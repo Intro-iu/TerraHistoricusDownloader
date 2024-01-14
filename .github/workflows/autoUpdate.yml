@@ -3,7 +3,7 @@ on:
   push:
     branches: main
     tags:
-      - "v*.*.*"
+      - "v1.0.0"
 permissions:
   contents: write
 
@@ -28,7 +28,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Start Downloading
-      run: python getTerriaComic.py
+      run: python getTerriaComic.py 2864
       
     - name: Zip files
       run: zip -r Asset.zip *
