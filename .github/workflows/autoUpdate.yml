@@ -5,9 +5,11 @@ env:
 
 on:
   push:
-    branches: main
+    branches: 
+      - main
     tags:
-      - v*.*.*
+      - "v*.*.*"
+      
 permissions:
   contents: write
 
@@ -36,13 +38,6 @@ jobs:
       
     - name: Zip files
       run: zip -r Asset.zip *
-
-    - name: Create Tag
-      uses: actions/create-tag@v1
-      with:
-        tag: ${{ env.VERSION }}
-        message: Release version ${}
-        sha: ${{ github.sha }}
         
     - name: Release
       uses: softprops/action-gh-release@v1
