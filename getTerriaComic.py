@@ -1,4 +1,4 @@
-import requests, json, os
+import requests, json, os, sys
 from multiprocessing.dummy import Pool
 from tqdm import tqdm
 
@@ -15,26 +15,37 @@ class Comic:
         self.cover_url = data["cover"]
         self.episodes = data["episodes"][::-1]
 
-    def download(self, start=0, end=-1):
+    def get_download_list(self, chapter):
+        existentChapter = [int(name[:2]) for name in os.listdir('./comic/' + self.title) if os.path.isdir(os.path.join('./comic/' + self.title, name))]
+        if len(chapter) == 0:
+            chapter = [i for i in range(0, len(self.episodes)) if i not in existentChapter]
+        else:
+            chapter = [i for i in chapter if i not in existentChapter]
+        return chapter
+
+    def download(self, chapter):
+        if len(chapter) == 0:
+            return
         os.chdir(os.path.dirname(__file__))
         try:
-            os.makedirs('comic\\' + self.title)
+            os.makedirs('comic/' + self.title)
         except Exception:
             pass
-        if end == -1:
-            end = len(self.episodes) - 1
         print(str(len(self.episodes)), "in total.")
-        print(end - start + 1, "is downloading.")
-        cnt = -1
+        print(len(chapter), "is downloading.")
         pageNum = []
         totalPages = 0
         ALL_ID = []
+        cnt = -1
         for ep in self.episodes:
             cnt = cnt + 1
-            if cnt < start or cnt > end:
+            if cnt not in chapter:
                 continue
             try:
-                os.makedirs('comic\\' + self.title + '\\' + ep["shortTitle"] + '-' + ep["title"])
+                if ep["shortTitle"][:2] == "预告":
+                    os.makedirs('comic/' + self.title + '/00' + ep["shortTitle"][2:] + '-' + ep["title"])
+                else:
+                    os.makedirs('comic/' + self.title + '/' + ep["shortTitle"] + '-' + ep["title"])
             except Exception:
                 pass
             page = len(json.loads(requests.get(self.base_url + str(self.comicID) + "/episode/" + ep['cid']).text)["data"]["pageInfos"])
@@ -57,23 +68,31 @@ class Comic:
         ep = self.episodes[PID]
         picUrl = json.loads(requests.get(self.base_url + str(self.comicID) + "/episode/" + ep['cid'] + "/page?pageNum=" + str(imgID)).text)["data"]["url"]
         picFile = requests.get(picUrl).content
-        with open('comic\\' + self.title + '\\' + ep["shortTitle"] + '-' + ep["title"] + '\\' + 'P' + str(imgID).rjust(3, '0') + ".jpg", "wb") as f:
-            f.write(picFile)
+        if ep["shortTitle"][:2] == "预告":
+            with open('comic/' + self.title + '/00' + ep["shortTitle"][2:] + '-' + ep["title"] + '/' + 'P' + str(imgID).rjust(3, '0') + ".jpg", "wb") as f:
+                f.write(picFile)
+        else:
+            with open('comic/' + self.title + '/' + ep["shortTitle"] + '-' + ep["title"] + '/' + 'P' + str(imgID).rjust(3, '0') + ".jpg", "wb") as f:
+                f.write(picFile)
 
     def save_info(self):
-        with open('comic\\' + self.title + '\\' + "info.txt", "w") as f:
-            f.write(str(self.info))
-
+        if os.path.exists('comic/' + self.title + "/info.txt"):
+            return
+        with open('comic/' + self.title + "/info.txt", "w") as f:
+            f.write(str(self.info) + "\n")
     def save_cover(self):
+        if os.path.exists('comic/' + self.title + "/cover.jpg"):
+            return
         cover = requests.get(self.cover_url).content
-        with open('comic\\' + self.title + '\\' + "cover.jpg", "wb") as f:
+        with open('comic/' + self.title + "/cover.jpg", "wb") as f:
             f.write(cover)
 
 if __name__ == "__main__":
-    comicID = 2864
-    start = 0
-    end = -1
+    comicID = int(sys.argv[1])
+    chapter = [int(i) for i in sys.argv[2:]]
     comic = Comic(comicID)
-    comic.download(start, end)
+    chapter = comic.get_download_list(chapter)
+    comic.download(chapter)
     comic.save_info()
     comic.save_cover()
+    print("Mission Accomplished")
