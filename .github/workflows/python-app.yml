@@ -39,27 +39,18 @@ jobs:
       run: |
         python getTerriaComic.py
 
-    - name: Zip the Build
-      run: zip -r ${{ secrets.ReleaseZipName }} ./comic/*
+    - name: Zip the Asset
+      run: zip -r Asset.zip ./comic/
         
-    - name: Create Release
-      id: releaseCreate
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create Release and Upload Release Asset
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        name: Release ${{ github.ref }}
         body: TODO New Release.
         draft: false
         prerelease: false
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./${{ secrets.ReleaseZipName }}.zip
-        asset_name: ${{ secrets.ReleaseZipName }}.zip
-        asset_content_type: application/zip
+        files: |
+          ${{ secrets.ReleaseZipName }}.zip
+          LICENSE 
