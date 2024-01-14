@@ -1,4 +1,4 @@
-name: Main
+name: autoUpdate
 on:
   push:
     branches: main
@@ -31,9 +31,7 @@ jobs:
       run: python getTerriaComic.py
       
     - name: Zip files
-      run: | 
-        zip -r Asset.zip *
-        ls
+      run: zip -r Asset.zip *
         
     - name: Release
       uses: softprops/action-gh-release@v1
