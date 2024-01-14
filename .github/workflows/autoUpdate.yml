@@ -35,7 +35,7 @@ jobs:
       run: python getTerriaComic.py 2864
       
     - name: Zip files
-      run: zip -r Asset.zip *
+      run: zip -r Asset.zip /comic
         
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -44,4 +44,9 @@ jobs:
         files: Asset.zip
         tag_name: ${{ env.VERSION }}
         name: Release ${{ env.VERSION }}
-        body: 第一个稳定版本\n新增漫画补全功能，并改用在终端中传参。\n\nPS:目前的补全是以漫画文件夹名称是否存在作为参考依据，所以没办法给只是缺页的漫画补全后续应该会添加缺页补全的功能
+        body: |
+          # 2024/1/15 更新内容:
+          这是第一个稳定版本
+          - 新增漫画补全功能
+          - 改用终端传参
+          PS: 目前的补全是以漫画文件夹名称是否存在作为参考依据，所以无法给只是缺页的漫画补全后续应该会添加缺页补全的功能
