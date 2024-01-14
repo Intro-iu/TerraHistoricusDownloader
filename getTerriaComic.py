@@ -34,7 +34,7 @@ class Comic:
             if cnt < start or cnt > end:
                 continue
             try:
-                os.makedirs(self.title + '\\' + ep["shortTitle"] + '-' + ep["title"])
+                os.makedirs('comic\\' + self.title + '\\' + ep["shortTitle"] + '-' + ep["title"])
             except Exception:
                 pass
             page = len(json.loads(requests.get(self.base_url + str(self.comicID) + "/episode/" + ep['cid']).text)["data"]["pageInfos"])
@@ -57,16 +57,16 @@ class Comic:
         ep = self.episodes[PID]
         picUrl = json.loads(requests.get(self.base_url + str(self.comicID) + "/episode/" + ep['cid'] + "/page?pageNum=" + str(imgID)).text)["data"]["url"]
         picFile = requests.get(picUrl).content
-        with open(self.title + '\\' + ep["shortTitle"] + '-' + ep["title"] + '\\' + 'P' + str(imgID).rjust(3, '0') + ".jpg", "wb") as f:
+        with open('comic\\' + self.title + '\\' + ep["shortTitle"] + '-' + ep["title"] + '\\' + 'P' + str(imgID).rjust(3, '0') + ".jpg", "wb") as f:
             f.write(picFile)
 
     def save_info(self):
-        with open(self.title + '\\' + "info.txt", "w") as f:
+        with open('comic\\' + self.title + '\\' + "info.txt", "w") as f:
             f.write(str(self.info))
 
     def save_cover(self):
         cover = requests.get(self.cover_url).content
-        with open(self.title + '\\' + "cover.jpg", "wb") as f:
+        with open('comic\\' + self.title + '\\' + "cover.jpg", "wb") as f:
             f.write(cover)
 
 if __name__ == "__main__":
