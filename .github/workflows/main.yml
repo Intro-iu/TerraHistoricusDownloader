@@ -1,6 +1,8 @@
 name: Main
 
 on: push
+permissions:
+  contents: write
 
 jobs:
   build:
