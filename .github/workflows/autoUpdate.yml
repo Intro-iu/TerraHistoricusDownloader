@@ -1,5 +1,4 @@
 name: autoUpdate
-
 on:
   push:
     branches: main
@@ -11,15 +10,18 @@ permissions:
 
 jobs:
   build:
-
+    name: autoRelease
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout sources
+      uses: actions/checkout@v3
+      
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
+        
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -30,8 +32,10 @@ jobs:
       run: python getTerriaComic.py
       
     - name: Zip files
-      run: zip -r Asset.zip *
-      
+      run: | 
+        zip -r Asset.zip *
+        ls
+        
     - name: Create Release and Upload Release Asset
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
