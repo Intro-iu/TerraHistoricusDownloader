@@ -39,10 +39,5 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        name: Release 0.1.0
-        tag_name: v0.1.0
-        commit: main
-        draft: false
-        prerelease: false
         files: |
           Asset.zip
