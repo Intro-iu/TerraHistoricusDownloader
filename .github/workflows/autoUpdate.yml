@@ -1,7 +1,7 @@
 name: autoUpdate
 
 env:
-  VERSION: v1.0.1-beta
+  VERSION: v2.0.0-beta
 
 on:
   push:
