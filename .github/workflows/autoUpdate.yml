@@ -33,9 +33,8 @@ jobs:
 
     - name: Mount CloudDrive
       run: |
-        mkdir -p ./comic
-        rclone mount CloudDrive:${{ secrets.COMIC_PATH }} ./comic --allow-other --daemon
-        ls comic
+        rclone lsf ${{ secrets.COMIC_PATH }} > dataList.log 
+        cat dataList.log
       env:
         RCLONE_CONFIG_PASS: ${{ secrets.RCLONE_CONFIG_PASS }}
 
