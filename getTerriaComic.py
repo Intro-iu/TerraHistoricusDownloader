@@ -56,7 +56,7 @@ class Comic:
                 ALL_ID.append([cnt, i])
         pbar = tqdm(total=totalPages)
         update = lambda *args: pbar.update()
-        pool = Pool(totalPages)
+        pool = Pool(processes=8)
         for i in ALL_ID:
             pool.apply_async(self.download_page, args=(i,), callback=update)
         pool.close()
