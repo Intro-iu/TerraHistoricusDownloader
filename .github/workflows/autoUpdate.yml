@@ -5,8 +5,8 @@ env:
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    # tags:
+    #   - "v*.*.*"
 
 permissions:
   contents: write
@@ -31,10 +31,6 @@ jobs:
       with:
         rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
-    - name: Mount CloudDrive
-      run: |
-        rclone lsf CloudDrive:${{ secrets.COMIC_PATH }} > dataList.log 
-        cat dataList.log
       env:
         RCLONE_CONFIG_PASS: ${{ secrets.RCLONE_CONFIG_PASS }}
 
@@ -44,7 +40,11 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
-    - name: Start Downloading
+    - name: Connect to CloudDrive
+      run: |
+        rclone lsf CloudDrive:${{ secrets.COMIC_PATH }}/Arknights > dataList.log
+
+    - name: Start Download Mission
       run: python getTerriaComic.py 2864
       
     - name: Zip files
