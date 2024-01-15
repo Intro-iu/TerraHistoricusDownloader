@@ -36,6 +36,8 @@ jobs:
         mkdir -p ./comic
         rclone mount CloudDrive:${{ secrets.COMIC_PATH }} ./comic --allow-other --daemon
         ls comic
+      env:
+        RCLONE_CONFIG_PASS: ${{ secrets.RCLONE_CONFIG_PASS }}
 
     - name: Install dependencies
       run: |
