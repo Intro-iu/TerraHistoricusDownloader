@@ -33,7 +33,7 @@ jobs:
 
     - name: Mount CloudDrive
       run: |
-        rclone lsf ${{ secrets.COMIC_PATH }} > dataList.log 
+        rclone lsf CloudDrive:${{ secrets.COMIC_PATH }} > dataList.log 
         cat dataList.log
       env:
         RCLONE_CONFIG_PASS: ${{ secrets.RCLONE_CONFIG_PASS }}
