@@ -30,7 +30,9 @@ jobs:
       uses: AnimMouse/setup-rclone@v1
       with:
         rclone_config: ${{ secrets.RCLONE_CONFIG }}
-    - run: |
+
+    - name: Mount CloudDrive
+      run: |
         mkdir -p ./comic
         rclone mount CloudDrive:${{ secrets.COMIC_PATH }} ./comic --allow-other --daemon
         ls comic
