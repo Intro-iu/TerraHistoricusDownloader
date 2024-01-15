@@ -33,7 +33,7 @@ class Comic:
         if len(chapter) == 0:
             return
         print(str(len(self.episodes)), "in total.")
-        print(len(chapter), "is downloading, using", 4*multiprocessing.cpu_count(), "processes")
+        print(len(chapter), "is downloading, using", 6*multiprocessing.cpu_count(), "processes")
         pageNum = []
         totalPages = 0
         ALL_ID = []
@@ -57,7 +57,7 @@ class Comic:
                 ALL_ID.append([cnt, i])
         pbar = tqdm(total=totalPages)
         update = lambda *args: pbar.update()
-        pool = Pool(processes=4*multiprocessing.cpu_count())
+        pool = Pool(processes=6*multiprocessing.cpu_count())
         for i in ALL_ID:
             pool.apply_async(self.download_page, args=(i,), callback=update)
         pool.close()
