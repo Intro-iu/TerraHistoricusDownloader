@@ -78,7 +78,10 @@
 
 - 注意事项：
 
-    - 举个栗子：假如你WebDav上Comic文件夹地址是 `https://example.com/dav/Media/Comic`，那么你的COMIC_PATH应该与该地址一致
+    - 举个栗子：
+        - 假如你WebDav地址是`https://example.com/dav/`
+        - 用于存放的文件夹地址是 `https://example.com/dav/Media/Comic/Arknights`
+        - 那么你的COMIC_PATH应该是: `Media/Comic/Arknights`
 
     - 脚本中执行的是 `-w` 选项
 
