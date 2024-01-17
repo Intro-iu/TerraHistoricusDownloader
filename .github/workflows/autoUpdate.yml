@@ -3,9 +3,9 @@ name: autoUpdate
 env:
   VERSION: v1.1.0
 on:
-  push:
-    # tags:
-    #   - "v*.*.*"
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
