@@ -41,7 +41,6 @@ jobs:
         
     - name: Start Download Mission
       run: |
-        cat dataList.log
         python getTerriaComic.py -mw ${{ secrets.COMIC_ID }}
         
     - name: Upload to CloudDrive
