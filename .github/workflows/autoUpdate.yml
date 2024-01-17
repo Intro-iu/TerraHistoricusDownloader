@@ -1,12 +1,11 @@
 name: autoUpdate
 
 env:
-  VERSION: v1.0.0
-
+  VERSION: v1.1.0
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,29 +23,39 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
-        
+
+    
+    - name: Setup rclone
+      uses: AnimMouse/setup-rclone@v1
+      with:
+        rclone_config: ${{ secrets.RCLONE_CONFIG }}
+
+      env:
+        RCLONE_CONFIG_PASS: ${{ secrets.RCLONE_CONFIG_PASS }}
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
-    - name: Start Downloading
-      run: python getTerriaComic.py 2864
-      
-    - name: Zip files
-      run: zip -r Asset.zip comic
+    - name: Start Download Mission
+      run: |
+        python getTerriaComic.py -w ${{ secrets.COMIC_PATH }} ${{ secrets.COMIC_ID }}
         
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: Asset.zip
-        tag_name: ${{ env.VERSION }}
-        name: Release ${{ env.VERSION }}
-        body: |
-          # 2024/1/15 更新内容:
-          这是第一个稳定版本
-          - 新增漫画补全功能
-          - 改用终端传参
-          PS: 目前的补全是以漫画文件夹名称是否存在作为参考依据，所以无法给只是缺页的漫画补全后续应该会添加缺页补全的功能
+    - name: Upload to CloudDrive
+      run: |
+        rclone copy ./Comic/ CloudDrive:${{ secrets.COMIC_PATH }}
+        
+    # - name: Release 1.1.0
+    #   uses: softprops/action-gh-release@v1
+    #   if: startsWith(github.ref, 'refs/tags/')
+    #   with:
+    #     tag_name: ${{ env.VERSION }}
+    #     name: Release ${{ env.VERSION }}
+    #     prerelease: true
+    #     body: |
+    #       # 2024/1/18 更新内容
+    #       - 支持多漫画同时下载
+    #       - 实现自动上传WebDav
+    #       - 修复了非数字编号命名章节无法下载的问题
