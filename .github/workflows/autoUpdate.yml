@@ -4,7 +4,7 @@ env:
   VERSION: v2.0.0
 on:
   schedule:
-    - cron: '21 20 * * *'
+    - cron: '0 20 * * *'
 
 permissions:
   contents: write
