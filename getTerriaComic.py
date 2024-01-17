@@ -41,7 +41,7 @@ class Comic:
             self.totalChapter.append([])
             if option:
                 data = []
-                os.system('rclone lsf ./Comic/ CloudDrive:${{ secrets.COMIC_PATH }}/' + self.CID[n] + '_' + self.title[n] + ' > dataList.log && cat dataList.log' )
+                os.system('rclone lsf ./Comic/ CloudDrive:' + self.comic_path + '/' + self.CID[n] + '_' + self.title[n] + ' > dataList.log && echo "Loaded"' )
                 with open('dataList.log', 'r', encoding='UTF-8') as f:
                     for line in f:
                         if line.strip('\n')[-1] == '/':
@@ -172,11 +172,14 @@ if __name__ == "__main__":
         comicID = [int(sys.argv[2])]
         chapter = [int(i) for i in sys.argv[3:]]
 
-    if option == "-mw":
+    if option == "-w":
         k = True
-        comicID = [int(s) for s in sys.argv[2:]]
+        comicID = [int(s) for s in sys.argv[3:]]
         chapter = []
+
     comic = Comic(comicID)
+    if k:
+        comic.comic_path = sys.argv[2]
     inexistentChapter = comic.get_download_list(chapter, k)
     comic.download(inexistentChapter)
     comic.save_info(k)
