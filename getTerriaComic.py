@@ -51,9 +51,9 @@ class Comic:
                     self.totalChapter[n].append(self.episodes[n][i]["title"])
                 self.inexistentChapter.append([i for i in self.totalChapter[n] if i not in self.existentChapter[n]])
             else:   # 指定补全
-                self.inexistentChapter.append([i for i in chapter if i not in self.existentChapter[n]])
+                self.inexistentChapter.append([self.episodes[n][i]["title"] for i in chapter if i not in self.existentChapter[n]])
         # print(self.existentChapter)
-        # print(self.inexistentChapter)
+        print(self.inexistentChapter)
         # print(self.totalChapter)
         return self.inexistentChapter  # 需补全章节
 
