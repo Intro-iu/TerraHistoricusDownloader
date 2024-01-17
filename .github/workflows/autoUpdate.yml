@@ -40,23 +40,21 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
-    - name: Connect to CloudDrive
-      run: |
-        rclone lsf CloudDrive:${{ secrets.COMIC_PATH }}/Arknights > dataList.log
 
     - name: Start Download Mission
       run: python getTerriaComic.py 2864
-      
-    - name: Zip files
-      run: zip -r Asset.zip comic
         
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: Asset.zip
-        tag_name: ${{ env.VERSION }}
-        name: Release ${{ env.VERSION }}
-        prerelease: true
-        body: |
-          测试webdav功能中
+    - name: Uploade to CloudDrive
+      run: |
+        rclone lsf CloudDrive:${{ secrets.COMIC_PATH }}/Arknights > dataList.log
+        rclone copy ./Comic/* CloudDrive:${{ secrets.COMIC_PATH }}/Arknights
+    # - name: Release
+    #   uses: softprops/action-gh-release@v1
+    #   if: startsWith(github.ref, 'refs/tags/')
+    #   with:
+    #     files: Asset.zip
+    #     tag_name: ${{ env.VERSION }}
+    #     name: Release ${{ env.VERSION }}
+    #     prerelease: true
+    #     body: |
+    #       测试webdav功能中
