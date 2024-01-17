@@ -41,7 +41,7 @@ class Comic:
             self.totalChapter.append([])
             if option:
                 data = []
-                os.system('rclone lsf ./Comic/ CloudDrive:' + self.comic_path + '/' + self.CID[n] + '_' + self.title[n] + ' > dataList.log && echo "Loaded"' )
+                os.system('rclone lsf CloudDrive:' + self.comic_path + '/' + self.CID[n] + '_' + self.title[n] + ' > dataList.log && echo "Loaded"' )
                 with open('dataList.log', 'r', encoding='UTF-8') as f:
                     for line in f:
                         if line.strip('\n')[-1] == '/':
