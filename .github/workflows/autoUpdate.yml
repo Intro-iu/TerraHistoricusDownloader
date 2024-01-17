@@ -4,7 +4,7 @@ env:
   VERSION: v1.1.0
 on:
   schedule:
-    - cron: '0 20 * * *'
+    - cron: '10 4 * * *'
   workflow_dispatch:
 
 permissions:
