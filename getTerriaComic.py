@@ -132,6 +132,7 @@ class Comic:
 
 if __name__ == "__main__":
     option = sys.argv[1]
+    comicID = []
     if option == "-m":
         comicID = [int(s) for s in sys.argv[2:]]
         chapter = []
