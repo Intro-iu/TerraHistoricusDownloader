@@ -33,19 +33,36 @@ class Comic:
     def remove_chars(self, s):
         return ''.join(x for x in s if x.isprintable())
 
-    def get_download_list(self, chapter):
+    def get_download_list(self, chapter, option):
         self.existentChapter = []
         self.inexistentChapter = []
         for n in range(0, len(self.CID)): # 讨论单个漫画
             self.existentChapter.append([])
             self.totalChapter.append([])
-            for name in os.listdir('Comic/' + self.CID[n] + '_' + self.title[n]):
-                if os.path.isdir(os.path.join('Comic/' + self.CID[n] + '_' + self.title[n], name)):
-                    if '「' in str(name):
-                        name = str(name).replace(str(name)[str(name).index('「'):str(name).index('」')+3], '')
+            if option:
+                data = []
+                os.system('rclone lsf ./Comic/ CloudDrive:${{ secrets.COMIC_PATH }}/' + self.CID[n] + '_' + self.title[n] + ' > dataList.log')
+                with open('dataList.log', 'r', encoding='UTF-8') as f:
+                    for line in f:
+                        if line.strip('\n')[-1] == '/':
+                            data.append(line.strip('\n')[:-1])
+            else:
+                data = os.listdir('Comic/' + self.CID[n] + '_' + self.title[n])
+
+            for name in data:
+                if option:
+                    cond = name in data
+                else:
+                    cond = os.path.isdir(os.path.join('Comic/' + self.CID[n] + '_' + self.title[n], name))
+                
+                if cond:
+                    name = str(name)
+                    if '「' in name:
+                        name = name.replace(name[name.index('「'):name.index('」')+3], '')
                     else:
-                        name = str(name).split('_')[1]
+                        name = name.split('_')[1]
                     self.existentChapter[n].append(self.remove_chars(name))
+                       
             if len(chapter) == 0:   # 全部补全
                 for i in range(0, len(self.episodes[n])):
                     self.totalChapter[n].append(self.episodes[n][i]["title"])
@@ -53,7 +70,7 @@ class Comic:
             else:   # 指定补全
                 self.inexistentChapter.append([self.episodes[n][i]["title"] for i in chapter if i not in self.existentChapter[n]])
         # print(self.existentChapter)
-        print(self.inexistentChapter)
+        # print(self.inexistentChapter)
         # print(self.totalChapter)
         return self.inexistentChapter  # 需补全章节
 
@@ -68,7 +85,6 @@ class Comic:
         ALL_ID = []
         for n in range(0, len(comicID)):
             TMP = -1
-            cnt = []
             for ep in self.episodes[n]:
                 TMP += 1
                 if ep["title"] not in inexistentChapter[n]:
@@ -116,15 +132,29 @@ class Comic:
         with open(path, "wb") as f:
             f.write(picFile)
 
-    def save_info(self):
+    def save_info(self, option):
         for n in range(0, len(self.comicID)):
-            if os.path.exists('Comic/' + self.CID[n] + '_' + self.title[n] + "/info.txt"):
+            if option:
+                with open('dataList.log', 'r', encoding='UTF-8') as f:
+                    data = f.readlines()
+                    data = [x.strip() for x in data]
+                    cond = 'info.txt' in data
+            else:
+                cond = os.path.exists('Comic/' + self.CID[n] + '_' + self.title[n] + "/info.txt")
+            if cond:
                 return
-            with open('Comic/' + self.CID[n] + '_' + self.title[n] + "/info.txt", "w") as f:
-                f.write(str(self.info[n]) + "\n")
-    def save_cover(self):
+            with open('Comic/' + self.CID[n] + '_' + self.title[n] + "/info.txt", "w", encoding="UTF-8") as f:
+                f.write(str(self.info[n]))
+    def save_cover(self, option):
         for n in range(0, len(self.comicID)):
-            if os.path.exists('Comic/' + self.CID[n] + '_' + self.title[n] + "/cover.jpg"):
+            if option:
+                with open('dataList.log', 'r', encoding='UTF-8') as f:
+                    data = f.readlines()
+                    data = [x.strip() for x in data]
+                    cond = 'cover.jpg' in data
+            else:
+                cond = os.path.exists('Comic/' + self.CID[n] + '_' + self.title[n] + "/cover.jpg")
+            if cond:
                 return
             cover = requests.get(self.cover_url[n]).content
             with open('Comic/' + self.CID[n] + '_' + self.title[n] + "/cover.jpg", "wb") as f:
@@ -134,14 +164,21 @@ if __name__ == "__main__":
     option = sys.argv[1]
     comicID = []
     if option == "-m":
+        k = False
         comicID = [int(s) for s in sys.argv[2:]]
         chapter = []
     if option == "-s":
+        k = False
         comicID = [int(sys.argv[2])]
         chapter = [int(i) for i in sys.argv[3:]]
+
+    if option == "-mw":
+        k = True
+        comicID = [int(s) for s in sys.argv[2:]]
+        chapter = []
     comic = Comic(comicID)
-    inexistentChapter = comic.get_download_list(chapter)
+    inexistentChapter = comic.get_download_list(chapter, k)
     comic.download(inexistentChapter)
-    comic.save_info()
-    comic.save_cover()
+    comic.save_info(k)
+    comic.save_cover(k)
     print("Mission Accomplished")
