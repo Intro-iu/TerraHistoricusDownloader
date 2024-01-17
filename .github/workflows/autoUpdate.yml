@@ -42,7 +42,7 @@ jobs:
         
 
     - name: Start Download Mission
-      run: python getTerriaComic.py 2864
+      run: python getTerriaComic.py -m 2864
         
     - name: Uploade to CloudDrive
       run: |
