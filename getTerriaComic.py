@@ -93,13 +93,11 @@ class Comic:
                 try:
                     if self.remove_chars(ep["shortTitle"]) == "预告":
                         tmp = '00'
-                        os.makedirs('Comic/' + self.CID[n] + '_' + self.title[n] + '/00' + '_' + ep["title"])
                     elif ep["type"] == 2:
-                        tmp = 'SP' + self.remove_chars(ep["shortTitle"])
-                        os.makedirs('Comic/' + self.CID[n] + '_' + self.title[n] + '/' + tmp + '_' + ep["title"])
+                        tmp = 'SP' + self.remove_chars(ep["shortTitle"]).replace(' ', '')
                     else:
-                        tmp = self.remove_chars(ep["shortTitle"])
-                        os.makedirs('Comic/' + self.CID[n] + '_' + self.title[n] + '/' + self.remove_chars(ep["shortTitle"]) + '_' + ep["title"])
+                        tmp = self.remove_chars(ep["shortTitle"]).replace(' ', '')
+                    os.makedirs('Comic/' + self.CID[n] + '_' + self.title[n] + '/' + tmp + '_' + ep["title"])
                 except Exception:
                     pass
                 page = len(json.loads(requests.get(self.base_url + self.CID[n] + "/episode/" + ep['cid']).text)["data"]["pageInfos"])
@@ -124,7 +122,7 @@ class Comic:
         CID = ID[0]
         PID = ID[1]
         imgID = ID[2]
-        PTITLE = ID[3]
+        PTITLE = ID[3].replace(' ', '')
         ep = self.episodes[CID][PID]
         picUrl = json.loads(requests.get(self.base_url + str(self.comicID[CID]) + "/episode/" + ep['cid'] + "/page?pageNum=" + str(imgID)).text)["data"]["url"]
         picFile = requests.get(picUrl).content
