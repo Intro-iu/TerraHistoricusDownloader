@@ -8,7 +8,7 @@
 
 1. 获取comicID
 
-    - 例如 `https://terra-historicus.hypergryph.com/comic/2864` 对应的 `comicID` 就是 `2864`
+    例如 `https://terra-historicus.hypergryph.com/comic/2864` 对应的 `comicID` 就是 `2864`
 
     > 对没错，我是洁厨
 
@@ -26,7 +26,7 @@
 
 4. 运行程序
 
-    - 指令存在三个选项：
+    指令存在三个选项：
 
         - `-m`: 下载多个漫画，后接 `comicID` (多个ID用空格隔开)
     
