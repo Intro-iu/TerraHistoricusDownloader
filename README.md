@@ -54,27 +54,29 @@ python getTerriaComic.py -s 2864 0 2 6
 
 - 程序会在当前目录的Comic文件夹下创建一个以漫画名字命名的文件夹，里面存放着的就是漫画资源
 
-### WebDav上传食用说明
+---
+
+### [高级玩法]WebDav上传食用说明
 
 - 原理: 白嫖 `Github Actions`
 
 - 步骤：
 
-    1. 将本仓库fork到自己的仓库
+1. 将本仓库fork到自己的仓库
 
-    2. 进入 `Settings -> Secrets -> Actions -> New repository secret`
+2. 进入 `Settings -> Secrets -> Actions -> New repository secret`
 
-    3. 添加四个环境变量：
+3. 添加四个环境变量：
 
-        - `COMIC_ID`: 填入 `comicID` (一个或多个，空格隔开)
+    - `COMIC_ID`: 填入 `comicID` (一个或多个，空格隔开)
 
-        - `COMIC_PATH`: 填入你想要存放漫画的文件夹的地址
+    - `COMIC_PATH`: 填入你想要存放漫画的文件夹的地址
 
-        - `RCLONE_CONFIG`: 将自己的 `rclone.conf` 配置文件加密: `base64 -w 0 rclone.conf` 得到的内容填入
+    - `RCLONE_CONFIG`: 将自己的 `rclone.conf` 配置文件加密: `base64 -w 0 rclone.conf` 得到的内容填入
 
-        - `RCLONE_CONFIG_PASS`: 阅读自己的 `rclone.conf` 配置文件，找到末尾的 `pass` 的值并填入
+    - `RCLONE_CONFIG_PASS`: 阅读自己的 `rclone.conf` 配置文件，找到末尾的 `pass` 的值并填入
 
-    4. 自动脚本名为 `autoUpdate.yml`，默认在每天凌晨四点同步更新
+4. 自动脚本名为 `autoUpdate.yml`，默认在每天凌晨四点同步更新
 
 - 注意事项：
 
