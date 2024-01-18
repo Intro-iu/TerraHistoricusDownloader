@@ -26,33 +26,33 @@
 
 4. 运行程序
 
-    指令存在三个选项：
+指令存在三个选项：
 
-    - `-m`: 下载多个漫画，后接 `comicID` (多个ID用空格隔开)
+- `-m`: 下载多个漫画，后接 `comicID` (多个ID用空格隔开)
     
-    - `-s`: 下载单个漫画，后接 `comicID` 与指定章节（多个章节用空格隔开，索引从0开始）
+- `-s`: 下载单个漫画，后接 `comicID` 与指定章节（多个章节用空格隔开，索引从0开始）
 
-    - `-w`: 后接WebDav存放文件夹地址与多个 `comicID` (多个ID用空格隔开)
+- `-w`: 后接WebDav存放文件夹地址与多个 `comicID` (多个ID用空格隔开)
 
 5. 示例 & 效果
 
-    - 自动补全所有章节(会跳过已有章节，comID自行获取)
+- 自动补全所有章节(会跳过已有章节，comID自行获取)
 
-    ```bash
-    python getTerriaComic.py -m 2864 6253
-    ```
+```bash
+python getTerriaComic.py -m 2864 6253
+```
 
-    - 选择下载章节(输入要下载的章节，空格隔开，索引从0开始)
+- 选择下载章节(输入要下载的章节，空格隔开，索引从0开始)
 
-    ```bash
-    python getTerriaComic.py -s 2864 0 2 6
-    ```
+```bash
+python getTerriaComic.py -s 2864 0 2 6
+```
 
-    > 以上指令均自检测排除已经下载的章节
+> 以上指令均自检测排除已经下载的章节
 
-    > `python getTerriaComic.py -m comicID` 等价于 `python getTerriaComic.py -s comicID`
+> `python getTerriaComic.py -m comicID` 等价于 `python getTerriaComic.py -s comicID`
 
-    - 程序会在当前目录的Comic文件夹下创建一个以漫画名字命名的文件夹，里面存放着的就是漫画资源
+- 程序会在当前目录的Comic文件夹下创建一个以漫画名字命名的文件夹，里面存放着的就是漫画资源
 
 ### WebDav上传食用说明
 
