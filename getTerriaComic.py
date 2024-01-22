@@ -159,6 +159,7 @@ class Comic:
                 f.write(cover)
 
 if __name__ == "__main__":
+    print("Loading...")
     option = sys.argv[1]
     comicID = []
     if option == "-m":
