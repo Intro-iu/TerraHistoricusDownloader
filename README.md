@@ -72,26 +72,44 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ### [高级玩法] WebDav 上传食用说明
 
--   **原理:** 白嫖 `Github Actions`
+-   **原理:** 白嫖 `Github Actions` + `Rclone` 自动上传WebDav
 -   **步骤：**
 
     1.  将本仓库 fork 到自己的仓库
     2.  进入 `Settings -> Secrets and Variables -> Actions`
-    3.  在 `Repository secrets` 添加四个环境变量：
-        -   `COMIC_ID`: 填入 `comicID` (一个或多个，空格隔开)
+    3.  在 `Secrets` 选项卡下 `Repository secrets` 添加加密变量：
         -   `COMIC_PATH`: 填入你想要存放漫画的文件夹的地址
         -   `RCLONE_CONFIG`: 将自己的 `rclone.conf` 配置文件加密: `base64 -w 0 rclone.conf` 得到的内容填入
-        -   `RCLONE_CONFIG_PASS`: 阅读自己的 `rclone.conf` 配置文件，找到末尾的 `pass` 的值并填入
-    4.  自动脚本名为 `autoUpdate.yml`，默认在每天凌晨四点同步更新
+        -   `RCLONE_CONFIG_PASS`: (如有) 阅读自己的 `rclone.conf` 配置文件，找到末尾的 `pass` 的值并填入（看下方注意事项）
+    4. 在 `Variables` 选项卡下 `Repository variables` 添加环境变量：
+        -   `COMIC_ID`: 填入 `comicID` (一个或多个，空格隔开)
+    5.  自动脚本名为 `autoUpdate.yml`，默认在每天凌晨四点同步更新
 
 -   **注意事项：**
+    -   Rclone 配置文件有一定的格式要求，其名称必须是 `CloudDrive`，例如：
+        1. pass 验证（这种情况下需要填写RCLONE_CONFIG_PASS变量）
+        ```toml
+        [CloudDive]
+        type = webdav
+        url = https://cloud.xxxx.com:114514/dav
+        vendor = your_type
+        user = username
+        pass = s_xxxxxxxxxxxxxxx
+        ```
+        2. token 验证（这种情况下只需要填写RCLONE_CONFIG）
+        ```toml
+        [CloudDive]
+        type = drive
+        client_id = xxx
+        client_secret = xxx
+        scope = drive
+        token = {"access_token":"xxx","token_type":"Bearer","refresh_token":"xxx","expiry":"2025-07-19T01:42:01.0070802+08:00"}
+        team_drive =
+        ```
 
-    -   举个栗子：
+    -   关于 WebDav 路径：
         -   假如你 WebDav 地址是 `https://example.com/dav/`
         -   用于存放的文件夹地址是 `https://example.com/dav/Media/Comic/Arknights`
         -   那么你的 COMIC_PATH 应该是: `Media/Comic/Arknights`
-    -   脚本中执行的是 `-w` 选项
-    -   第一次同步的下载比较大，不建议一次性添加太多
-    -   运行如果顺利，你将能在 WebDav 中你设置的文件夹下看到你的漫画
 
 ## 就是为了这碟醋包的饺子（乐）
