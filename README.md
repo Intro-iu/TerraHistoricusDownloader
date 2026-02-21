@@ -70,7 +70,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ---
 
-### [高级玩法] WebDav 上传食用说明
+### [高级玩法] WebDAV 上传食用说明
 
 -   **原理:** 白嫖 `Github Actions` + `Rclone` 自动上传WebDav
 -   **步骤：**
@@ -88,7 +88,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 -   **注意事项：**
     -   Rclone 配置文件有一定的格式要求，其名称必须是 `CloudDrive`，例如：
         1. pass 验证（这种情况下需要填写RCLONE_CONFIG_PASS变量）
-        ```toml
+        ```ini
         [CloudDive]
         type = webdav
         url = https://cloud.xxxx.com:114514/dav
@@ -97,7 +97,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
         pass = s_xxxxxxxxxxxxxxx
         ```
         2. token 验证（这种情况下只需要填写RCLONE_CONFIG）
-        ```toml
+        ```ini
         [CloudDive]
         type = drive
         client_id = xxx
