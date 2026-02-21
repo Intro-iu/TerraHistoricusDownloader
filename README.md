@@ -76,8 +76,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 -   **步骤：**
 
     1.  将本仓库 fork 到自己的仓库
-    2.  进入 `Settings -> Secrets -> Actions -> New repository secret`
-    3.  添加四个环境变量：
+    2.  进入 `Settings -> Secrets and Variables -> Actions`
+    3.  在 `Repository secrets` 添加四个环境变量：
         -   `COMIC_ID`: 填入 `comicID` (一个或多个，空格隔开)
         -   `COMIC_PATH`: 填入你想要存放漫画的文件夹的地址
         -   `RCLONE_CONFIG`: 将自己的 `rclone.conf` 配置文件加密: `base64 -w 0 rclone.conf` 得到的内容填入
